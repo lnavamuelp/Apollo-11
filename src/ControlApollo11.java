@@ -23,7 +23,7 @@ public class ControlApollo11 {
 
     // Declaración de variables relacionadas con la lógica del hilo
     private Task task;
-    private String txtMensaje = "FIN Proceso";
+    private String txtMensaje = "Cuenta atras finalizada. Cohete lanzado.";
     private boolean hiloIniciado = false;
 
 
@@ -40,17 +40,17 @@ btnInicio.addActionListener(new ActionListener() {
                         barraProgreso.setMaximum(segundos);
                         task = new ControlApollo11.Task(segundos);
                         task.start();
-                        txtMensaje = "FIN Proceso";
+//                        txtMensaje = "Cohete lanzado correctamente";
                         hiloIniciado = true;
                     } catch (NumberFormatException ex) {
-                        mostrarError("Debes introducir un número entero");
+                        mostrarError("Debes introducir un número entero de segundos para lanzar la cuenta atras.");
                         inicializarObjetos();
                     } catch (IllegalArgumentException ex) {
                         mostrarError(ex.getMessage());
                         inicializarObjetos();
                     }
                 } else {
-                    mostrarError("Ya hay un hilo en ejecución. Debes esperar a que termine.");
+                    mostrarError("Ya hay una cuenta atrás iniciada. Debes esperar a que termine o cancelarla para iniciar otra.");
                 }
             }
         });
@@ -59,12 +59,12 @@ btnInicio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (hiloIniciado) {
-                    txtMensaje = "Cancelado por Usuario";
+                    txtMensaje = "Lanzamiento abortado. Cuentra atrás cancelada por el usuario.";
                     inicializarObjetos();
                     task.detener();
                     hiloIniciado = false;
                 } else {
-                    mostrarError("El Hilo no ha sido iniciado");
+                    mostrarError("No se puede cancelar la cuenta atrás. No se ha iniciado ninguna");
                 }
             }
         });
@@ -85,7 +85,7 @@ btnInicio.addActionListener(new ActionListener() {
 
     private void validarSegundos(int segundos) {
         if (segundos <= 0) {
-            throw new IllegalArgumentException("El número de segundos debe ser mayor que cero.");
+            throw new IllegalArgumentException("El número de segundos para la cuenta atras debe ser mayor que cero.");
         }
     }
 
