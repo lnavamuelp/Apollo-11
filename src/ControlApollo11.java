@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ControlApollo11 {
+
+    // Declaración de componentes de la interfaz gráfica
     private JPanel rootPanel;
 
     private JLabel lblSegundos;
@@ -19,6 +21,7 @@ public class ControlApollo11 {
     private JLabel tituloPral;
     private JLabel lblimage;
 
+    // Declaración de variables relacionadas con la lógica del hilo
     private Task task;
     private String txtMensaje = "FIN Proceso";
     private boolean hiloIniciado = false;
@@ -26,7 +29,8 @@ public class ControlApollo11 {
 
     public ControlApollo11() {
 
-        btnInicio.addActionListener(new ActionListener() {
+// Configuración de acciones para los botones de Iniciar y Detener Cuenta Atras.
+btnInicio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!hiloIniciado) {
@@ -50,6 +54,7 @@ public class ControlApollo11 {
                 }
             }
         });
+
         btnCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,19 +71,16 @@ public class ControlApollo11 {
     }
 
     public static void main(String[] args) {
+
+        // Creación de la ventana principal
         JFrame frame = new JFrame("ControlApollo11");
+
+        // Creación del panel principal que contendrá todos los componentes
         frame.setContentPane(new ControlApollo11().rootPanel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
-        Image image = null;
-        try {
-            URL url = new URL("https://spacecenter.org/wp-content/uploads/2022/09/Apollo-Mission-Control-15-inch.png");
-            image = ImageIO.read(url);
-        }
-        catch (IOException e) {
-        }
     }
 
     private void validarSegundos(int segundos) {
@@ -87,19 +89,23 @@ public class ControlApollo11 {
         }
     }
 
+    // Método para mostrar mensajes de error
     private void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
+    // Método para reiniciar los componentes al estado inicial
     private void inicializarObjetos() {
         barraProgreso.setValue(0);
         txtSegundos.setText("");
         lblSegundosSal.setText("");
     }
 
+    // Clase interna que representa el hilo de cuenta atrás
     private class Task extends Thread {
         private int numSegundos;
 
+        // Método para validar que los segundos sean mayores que cero
         public Task(int numSegundos) {
             this.numSegundos = numSegundos;
         }
@@ -124,12 +130,14 @@ public class ControlApollo11 {
             }
 
             SwingUtilities.invokeLater(() -> {
+                // Mostrar mensaje al finalizar el hilo
                 JOptionPane.showMessageDialog(null, txtMensaje);
                 inicializarObjetos();
                 hiloIniciado = false;
             });
         }
 
+        // Método para detener el hilo
         public void detener() {
             interrupt();
         }
