@@ -1,17 +1,11 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class ControlApollo11 {
 
     // Declaración de componentes de la interfaz gráfica
     private JPanel rootPanel;
-
-    private JLabel lblSegundos;
     private JLabel lblSegundosSal;
     private JButton btnInicio;
     private JButton btnCancelar;
@@ -20,6 +14,8 @@ public class ControlApollo11 {
 
     private JLabel tituloPral;
     private JLabel lblimage;
+    private JLabel lblsegundosentrada;
+    private JLabel lblbarraprogreso;
 
     // Declaración de variables relacionadas con la lógica del hilo
     private Task task;
@@ -30,42 +26,36 @@ public class ControlApollo11 {
     public ControlApollo11() {
 
 // Configuración de acciones para los botones de Iniciar y Detener Cuenta Atras.
-btnInicio.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!hiloIniciado) {
-                    try {
-                        int segundos = Integer.parseInt(txtSegundos.getText());
-                        validarSegundos(segundos);
-                        barraProgreso.setMaximum(segundos);
-                        task = new ControlApollo11.Task(segundos);
-                        task.start();
+btnInicio.addActionListener(e -> {
+    if (!hiloIniciado) {
+        try {
+            int segundos = Integer.parseInt(txtSegundos.getText());
+            validarSegundos(segundos);
+            barraProgreso.setMaximum(segundos);
+            task = new Task(segundos);
+            task.start();
 //                        txtMensaje = "Cohete lanzado correctamente";
-                        hiloIniciado = true;
-                    } catch (NumberFormatException ex) {
-                        mostrarError("Debes introducir un número entero de segundos para lanzar la cuenta atras.");
-                        inicializarObjetos();
-                    } catch (IllegalArgumentException ex) {
-                        mostrarError(ex.getMessage());
-                        inicializarObjetos();
-                    }
-                } else {
-                    mostrarError("Ya hay una cuenta atrás iniciada. Debes esperar a que termine o cancelarla para iniciar otra.");
-                }
-            }
-        });
+            hiloIniciado = true;
+        } catch (NumberFormatException ex) {
+            mostrarError("Debes introducir un número entero de segundos para lanzar la cuenta atras del transbordador.");
+            inicializarObjetos();
+        } catch (IllegalArgumentException ex) {
+            mostrarError(ex.getMessage());
+            inicializarObjetos();
+        }
+    } else {
+        mostrarError("Ya hay una cuenta atrás iniciada. Debes esperar a que termine o cancelarla para iniciar otro lanzamiento.");
+    }
+});
 
-        btnCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (hiloIniciado) {
-                    txtMensaje = "Lanzamiento abortado. Cuentra atrás cancelada por el usuario.";
-                    inicializarObjetos();
-                    task.detener();
-                    hiloIniciado = false;
-                } else {
-                    mostrarError("No se puede cancelar la cuenta atrás. No se ha iniciado ninguna");
-                }
+        btnCancelar.addActionListener(e -> {
+            if (hiloIniciado) {
+                txtMensaje = "Lanzamiento abortado. Cuentra atrás cancelada por el usuario.";
+                inicializarObjetos();
+                task.detener();
+                hiloIniciado = false;
+            } else {
+                mostrarError("Lanzamiento no iniciado. Cuenta atras no iniciada.");
             }
         });
     }
@@ -73,7 +63,7 @@ btnInicio.addActionListener(new ActionListener() {
     public static void main(String[] args) {
 
         // Creación de la ventana principal
-        JFrame frame = new JFrame("ControlApollo11");
+        JFrame frame = new JFrame("Control Lanzamiento Apollo 11");
 
         // Creación del panel principal que contendrá todos los componentes
         frame.setContentPane(new ControlApollo11().rootPanel);
