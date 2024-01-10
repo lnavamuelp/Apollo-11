@@ -16,7 +16,7 @@
         </constraints>
         <properties>
           <font name="Corbel" size="36" style="0"/>
-          <foreground color="-331520"/>
+          <foreground color="-1"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="0"/>
           <text value="Control Lanzamiento Apollo 11"/>

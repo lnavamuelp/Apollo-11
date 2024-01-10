@@ -1,17 +1,14 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ControlApollo11 {
 
-    // Declaración de componentes de la interfaz gráfica
+   //  Declaración de componentes de la interfaz gráfica
     private JPanel rootPanel;
     private JLabel lblSegundosSal;
     private JButton btnInicio;
     private JButton btnCancelar;
     private JProgressBar barraProgreso;
     private JFormattedTextField txtSegundos;
-
     private JLabel tituloPral;
     private JLabel lblimage;
     private JLabel lblsegundosentrada;
@@ -26,27 +23,27 @@ public class ControlApollo11 {
     public ControlApollo11() {
 
 // Configuración de acciones para los botones de Iniciar y Detener Cuenta Atras.
-btnInicio.addActionListener(e -> {
-    if (!hiloIniciado) {
-        try {
-            int segundos = Integer.parseInt(txtSegundos.getText());
-            validarSegundos(segundos);
-            barraProgreso.setMaximum(segundos);
-            task = new Task(segundos);
-            task.start();
+        btnInicio.addActionListener(e -> {
+            if (!hiloIniciado) {
+                try {
+                    int segundos = Integer.parseInt(txtSegundos.getText());
+                    validarSegundos(segundos);
+                    barraProgreso.setMaximum(segundos);
+                    task = new Task(segundos);
+                    task.start();
 //                        txtMensaje = "Cohete lanzado correctamente";
-            hiloIniciado = true;
-        } catch (NumberFormatException ex) {
-            mostrarError("Debes introducir un número entero de segundos para lanzar la cuenta atras del transbordador.");
-            inicializarObjetos();
-        } catch (IllegalArgumentException ex) {
-            mostrarError(ex.getMessage());
-            inicializarObjetos();
-        }
-    } else {
-        mostrarError("Ya hay una cuenta atrás iniciada. Debes esperar a que termine o cancelarla para iniciar otro lanzamiento.");
-    }
-});
+                    hiloIniciado = true;
+                } catch (NumberFormatException ex) {
+                    mensajePersonalizado("Debes introducir un número entero de segundos para lanzar la cuenta atras del transbordador.");
+                    inicializarObjetos();
+                } catch (IllegalArgumentException ex) {
+                    mensajePersonalizado(ex.getMessage());
+                    inicializarObjetos();
+                }
+            } else {
+                mensajePersonalizado("Ya hay una cuenta atrás iniciada. Debes esperar a que termine o cancelarla para iniciar otro lanzamiento.");
+            }
+        });
 
         btnCancelar.addActionListener(e -> {
             if (hiloIniciado) {
@@ -55,7 +52,7 @@ btnInicio.addActionListener(e -> {
                 task.detener();
                 hiloIniciado = false;
             } else {
-                mostrarError("Lanzamiento no iniciado. Cuenta atras no iniciada.");
+                mensajePersonalizado("Lanzamiento no iniciado. Cuenta atras no iniciada.");
             }
         });
     }
@@ -80,7 +77,7 @@ btnInicio.addActionListener(e -> {
     }
 
     // Método para mostrar mensajes de error
-    private void mostrarError(String mensaje) {
+    private void mensajePersonalizado(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
